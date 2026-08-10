@@ -174,16 +174,36 @@
   text-transform:uppercase;color:#fff;margin:0 0 1.1rem;display:flex;align-items:center;gap:.5rem}
 .ih-side h2::before{content:"";width:6px;height:6px;border-radius:50%;background:#00F2FE}
 .ih-arbre{list-style:none;margin:0;padding:0}
-.ih-arbre li{border-bottom:1px solid rgba(30,41,59,.6)}
-.ih-arbre li:last-child{border-bottom:0}
-.ih-arbre a{display:flex;justify-content:space-between;gap:.75rem;padding:.65rem 0;
-  font-size:.8rem;color:#cbd5e1;text-decoration:none;transition:color .2s}
-.ih-arbre a:hover,.ih-arbre a.actif{color:#00F2FE}
-.ih-arbre .cpt{font-size:.65rem;color:#475569;font-variant-numeric:tabular-nums}
-.ih-arbre .sous{list-style:none;margin:0 0 .5rem;padding:0 0 0 .8rem;
-  border-left:1px solid rgba(6,182,212,.2)}
-[dir="rtl"] .ih-arbre .sous{padding:0 .8rem 0 0;border-left:0;border-right:1px solid rgba(6,182,212,.2)}
-.ih-arbre .sous a{font-size:.72rem;color:#64748b;padding:.3rem 0}
+.ih-arbre>li{border-bottom:1px solid rgba(30,41,59,.6)}
+.ih-arbre>li:last-child{border-bottom:0}
+.ih-ligne{display:flex;align-items:center;gap:.4rem}
+.ih-ligne>a{flex:1 1 auto;display:flex;justify-content:space-between;gap:.75rem;padding:.65rem 0;
+  font-size:.8rem;color:#cbd5e1;text-decoration:none;transition:color .2s;min-width:0}
+.ih-ligne>a:hover,.ih-ligne>a.actif{color:#00F2FE}
+.ih-arbre .cpt{font-size:.65rem;color:#475569;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.ih-chev{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  width:1.6rem;height:1.6rem;padding:0;border:0;border-radius:.35rem;cursor:pointer;
+  background:transparent;color:rgba(6,182,212,.7);transition:transform .3s,color .2s,background .2s}
+.ih-chev svg{width:.8rem;height:.8rem}
+.ih-chev:hover{color:#00F2FE;background:rgba(6,182,212,.1)}
+.ih-noeud.ouvert>.ih-ligne>.ih-chev{transform:rotate(90deg)}
+[dir="rtl"] .ih-chev{transform:scaleX(-1)}
+[dir="rtl"] .ih-noeud.ouvert>.ih-ligne>.ih-chev{transform:scaleX(-1) rotate(90deg)}
+/* Replie par defaut.
+   Note : grid-template-rows:0fr ne contraint que la PREMIERE ligne, les
+   sous-categories suivantes restaient visibles. On revient a max-height,
+   dimensionne large (la branche la plus fournie a 7 entrees). */
+.ih-arbre .sous{list-style:none;margin:0;padding:0;
+  max-height:0;overflow:hidden;transition:max-height .32s cubic-bezier(.22,1,.36,1)}
+.ih-noeud.ouvert>.sous{max-height:32rem}
+.ih-arbre .sous>li:first-child{padding-top:.15rem}
+.ih-arbre .sous>li:last-child{padding-bottom:.6rem}
+.ih-arbre .sous a{display:flex;justify-content:space-between;gap:.6rem;
+  margin-left:.8rem;padding:.32rem 0 .32rem .7rem;border-left:1px solid rgba(6,182,212,.2);
+  font-size:.72rem;color:#64748b;text-decoration:none;transition:color .2s}
+[dir="rtl"] .ih-arbre .sous a{margin-left:0;margin-right:.8rem;padding:.32rem .7rem .32rem 0;
+  border-left:0;border-right:1px solid rgba(6,182,212,.2)}
+.ih-arbre .sous a:hover,.ih-arbre .sous a.actif{color:#00F2FE;border-color:rgba(6,182,212,.6)}
 
 .ih-cherche{position:relative;margin-bottom:1.25rem}
 .ih-cherche input{width:100%;padding:.65rem .9rem .65rem 2.3rem;border-radius:.5rem;

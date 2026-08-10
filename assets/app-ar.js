@@ -202,3 +202,45 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   tabs[0].setAttribute('aria-current', 'true');
 });
+
+
+/* ==================================================================
+   Menu lateral du catalogue : accordeon.
+   Tout etait deplie d'un coup ; les sous-categories sont desormais
+   repliees, le chevron ouvre. La branche de la categorie affichee
+   s'ouvre toute seule.
+================================================================== */
+document.addEventListener('DOMContentLoaded', function () {
+  var arbre = document.querySelector('.ih-arbre');
+  if (!arbre) return;
+
+  function bascule(li, ouvrir) {
+    var chev = li.querySelector(':scope > .ih-ligne > .ih-chev');
+    if (!chev) return;
+    var on = (ouvrir === undefined) ? !li.classList.contains('ouvert') : ouvrir;
+    li.classList.toggle('ouvert', on);
+    chev.setAttribute('aria-expanded', on ? 'true' : 'false');
+  }
+
+  arbre.querySelectorAll('.ih-chev').forEach(function (b) {
+    b.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var li = b.closest('.ih-noeud');
+      var etait = li.classList.contains('ouvert');
+      /* une seule branche ouverte a la fois : la liste reste courte */
+      arbre.querySelectorAll('.ih-noeud.ouvert').forEach(function (o) {
+        if (o !== li) bascule(o, false);
+      });
+      bascule(li, !etait);
+    });
+  });
+
+  /* ouvrir la branche correspondant a ?c=... */
+  var c = new URLSearchParams(location.search).get('c');
+  if (!c) return;
+  var cible = arbre.querySelector('a[href$="?c=' + c + '"]');
+  if (!cible) return;
+  cible.classList.add('actif');
+  var li = cible.closest('.ih-noeud');
+  if (li) bascule(li, true);
+});
