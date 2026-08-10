@@ -297,9 +297,10 @@
 :root{--ih-hh:88px}
 
 .ih-mega-wrap{position:relative;display:flex;align-items:center}
-.ih-mega-btn{display:inline-flex;align-items:center;gap:.3rem}
+.ih-mega-btn,.ih-mega-btn2{display:inline-flex;align-items:center;gap:.3rem;white-space:nowrap}
 .ih-mega-fleche{width:.8rem;height:.8rem;transition:transform .25s;opacity:.75}
-.ih-mega-btn[aria-expanded="true"] .ih-mega-fleche{transform:rotate(180deg)}
+.ih-mega-btn[aria-expanded="true"] .ih-mega-fleche,
+.ih-mega-btn2[aria-expanded="true"] .ih-mega-fleche{transform:rotate(180deg)}
 
 .ih-mega{position:fixed;left:0;right:0;top:var(--ih-hh);z-index:45;
   background:rgba(3,5,7,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
