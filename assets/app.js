@@ -20,10 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
   var LINKS = [['Accueil','index.html'],['À propos','index.html#about'],['Services','index.html#services'],
                ['Solutions','index.html#solutions'],['Réalisations','index.html#realisations'],
                ['Catalogue','catalogue.html'],['Contact','index.html#contact']];
+  if (window.IH_LINKS) LINKS = window.IH_LINKS;
   var panel = document.createElement('div');
   panel.className = 'ih-menu';
   panel.innerHTML = '<button aria-label="Fermer" class="ih-menu-close">&times;</button>' +
-    LINKS.map(function(l){ return '<a href="'+l[1]+'">'+l[0]+'</a>'; }).join('') + '<a href="https://wa.me/212605747417" target="_blank" rel="noopener noreferrer" class="ih-menu-cta">Demander un devis</a>';
+    LINKS.map(function(l){ return '<a href="'+l[1]+'">'+l[0]+'</a>'; }).join('') + '<a href="https://wa.me/212605747417" target="_blank" rel="noopener noreferrer" class="ih-menu-cta">'
+      + (window.IH_CTA || 'Demander un devis') + '</a>';
   document.body.appendChild(panel);
   function closeMenu(){ panel.classList.remove('is-open'); document.body.style.overflow=''; }
   function openMenu(){ panel.classList.add('is-open'); document.body.style.overflow='hidden'; }
@@ -506,4 +508,29 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.hidden) clearInterval(minuteur); else relancer();
   });
   relancer();
+});
+
+
+/* --- Selecteur de langue : ouverture au clic, fermeture ailleurs --- */
+document.addEventListener('DOMContentLoaded', function () {
+  var blocs = [].slice.call(document.querySelectorAll('.ih-lang'));
+  if (!blocs.length) return;
+  blocs.forEach(function (b) {
+    var btn = b.querySelector('.ih-lang-btn');
+    btn.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var on = !b.classList.contains('ouvert');
+      blocs.forEach(function (o) { o.classList.remove('ouvert');
+        o.querySelector('.ih-lang-btn').setAttribute('aria-expanded', 'false'); });
+      b.classList.toggle('ouvert', on);
+      btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', function () {
+    blocs.forEach(function (o) { o.classList.remove('ouvert');
+      o.querySelector('.ih-lang-btn').setAttribute('aria-expanded', 'false'); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') blocs.forEach(function (o) { o.classList.remove('ouvert'); });
+  });
 });

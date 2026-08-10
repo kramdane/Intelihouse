@@ -7,20 +7,14 @@ deployment:
     - /bin/mkdir -p $DEPLOYPATH/assets
     - /bin/mkdir -p $DEPLOYPATH/images/produits
 
-    # Pages
-    - /bin/cp -f index.html $DEPLOYPATH/
-    - /bin/cp -f index-ar.html $DEPLOYPATH/
-    - /bin/cp -f catalogue.html $DEPLOYPATH/
-    - /bin/cp -f catalogue-ar.html $DEPLOYPATH/
-    - /bin/cp -f categorie.html $DEPLOYPATH/
-    - /bin/cp -f categorie-ar.html $DEPLOYPATH/
-    - /bin/cp -f produit.html $DEPLOYPATH/
-    - /bin/cp -f produit-ar.html $DEPLOYPATH/
+    # Toutes les pages, y compris celles ajoutees plus tard.
+    # Une liste explicite avait laisse les 34 fiches services en 404.
+    - /bin/cp -f *.html $DEPLOYPATH/
 
-    # Configuration serveur (fichier cache : jamais pris par un caractere joker)
+    # Fichier cache : jamais pris par un caractere joker, d'ou la ligne dediee.
     - /bin/cp -f .htaccess $DEPLOYPATH/
 
-    # Feuilles de style, scripts et donnees produits
+    # Styles, scripts et donnees produits
     - /bin/cp -f assets/style.css $DEPLOYPATH/assets/
     - /bin/cp -f assets/extra.css $DEPLOYPATH/assets/
     - /bin/cp -f assets/rtl.css $DEPLOYPATH/assets/

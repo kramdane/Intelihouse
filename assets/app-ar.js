@@ -507,3 +507,28 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   relancer();
 });
+
+
+/* --- Selecteur de langue : ouverture au clic, fermeture ailleurs --- */
+document.addEventListener('DOMContentLoaded', function () {
+  var blocs = [].slice.call(document.querySelectorAll('.ih-lang'));
+  if (!blocs.length) return;
+  blocs.forEach(function (b) {
+    var btn = b.querySelector('.ih-lang-btn');
+    btn.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var on = !b.classList.contains('ouvert');
+      blocs.forEach(function (o) { o.classList.remove('ouvert');
+        o.querySelector('.ih-lang-btn').setAttribute('aria-expanded', 'false'); });
+      b.classList.toggle('ouvert', on);
+      btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', function () {
+    blocs.forEach(function (o) { o.classList.remove('ouvert');
+      o.querySelector('.ih-lang-btn').setAttribute('aria-expanded', 'false'); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') blocs.forEach(function (o) { o.classList.remove('ouvert'); });
+  });
+});
