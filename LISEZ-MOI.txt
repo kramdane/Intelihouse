@@ -1,0 +1,48 @@
+SITE INTELLIHOUSE — statique, bilingue FR / darija
+==================================================
+
+  index.html          Accueil (FR)          index-ar.html
+  catalogue.html      18 familles           catalogue-ar.html
+  categorie.html      liste d'une famille   categorie-ar.html      ?c=slug
+  produit.html        fiche produit         produit-ar.html        ?p=slug
+
+  assets/style.css        Tailwind compile du site d'origine — NE PAS MODIFIER
+  assets/extra.css        tout le CSS ajoute (menu mobile, catalogue, fiches)
+  assets/rtl.css          inversions droite-a-gauche + police Cairo
+  assets/app.js           interactions FR      assets/app-ar.js
+  assets/produits.json    260 produits, 86 categories (113 Ko)
+  assets/descriptions.json  descriptions techniques (604 Ko)
+
+  images/                 logo + 21 visuels de familles
+  images/produits/        255 photos produits — VOIR CI-DESSOUS
+
+PHOTOS PRODUITS
+---------------
+Le dossier images/produits/ doit etre rempli avec l'archive
+"images-produits.zip" fournie separement (3,3 Mo, 255 fichiers WebP).
+Tant qu'il est vide, les fiches basculent automatiquement sur les photos
+hebergees par intellihouse.ma : le site reste fonctionnel, mais depend
+du site source.
+
+METTRE A JOUR LE CATALOGUE
+--------------------------
+Reexporter les produits depuis WooCommerce, puis regenerer
+assets/produits.json et assets/descriptions.json. Les pages n'ont pas
+besoin d'etre modifiees : elles lisent ces deux fichiers.
+
+Attention : l'export WooCommerce met la description longue dans la
+colonne "Description courte" et laisse "Description" vide.
+
+AJOUTER DES CLASSES TAILWIND
+----------------------------
+style.css est PURGE : il ne contient que les classes de la page d'accueil
+d'origine. Une classe nouvelle (py-20, z-[60], xl:grid-cols-4...) n'y
+existe pas et n'aura aucun effet. Ajouter la regle dans assets/extra.css.
+Points de rupture : sm 40rem, md 48rem, lg 64rem, xl 80rem, 2xl 96rem.
+
+A BRANCHER
+----------
+- Formulaire de contact (index.html) : simule. Voir Formspree / Web3Forms.
+- Les boutons "Demander un devis" et "En savoir plus" ouvrent WhatsApp
+  (wa.me/212605747417). Pour changer le numero : rechercher "wa.me/212605747417"
+  dans les pages HTML et dans assets/app*.js.

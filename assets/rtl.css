@@ -1,0 +1,84 @@
+/* ------------------------------------------------------------------
+   rtl.css — passage en droite-à-gauche pour les pages arabes.
+   style.css est du Tailwind compilé qui utilise des propriétés
+   PHYSIQUES (left, ml-, pl-, text-left...) : elles ne s'inversent pas
+   toutes seules. Ce fichier les retourne explicitement.
+------------------------------------------------------------------- */
+
+/* --- Typographie arabe --- */
+[dir="rtl"] body,
+[dir="rtl"] .font-sans   { font-family:'Cairo','Plus Jakarta Sans',system-ui,sans-serif }
+[dir="rtl"] .font-heading{ font-family:'Cairo','Outfit',system-ui,sans-serif; font-weight:800 }
+[dir="rtl"] { letter-spacing:normal }
+/* l'interlettrage latin casse l'arabe : on le neutralise */
+[dir="rtl"] .tracking-wide,[dir="rtl"] .tracking-wider,[dir="rtl"] .tracking-widest,
+[dir="rtl"] .tracking-tight,[dir="rtl"] .tracking-tighter,
+[dir="rtl"] [class*="tracking-["] { letter-spacing:0 !important }
+/* l'arabe n'a pas de capitales : uppercase n'a aucun effet visuel utile */
+[dir="rtl"] .uppercase { text-transform:none }
+/* interligne un peu plus aérée, les diacritiques ont besoin de place */
+[dir="rtl"] p,[dir="rtl"] li,[dir="rtl"] span { line-height:1.85 }
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3,[dir="rtl"] h4 { line-height:1.5 }
+
+/* --- Alignement du texte --- */
+[dir="rtl"] .text-left  { text-align:right }
+[dir="rtl"] .text-right { text-align:left }
+
+/* --- Positionnement absolu / fixe --- */
+[dir="rtl"] .left-3  { left:auto; right:.75rem }
+[dir="rtl"] .left-4  { left:auto; right:1rem }
+[dir="rtl"] .left-6  { left:auto; right:1.5rem }
+[dir="rtl"] .right-3 { right:auto; left:.75rem }
+[dir="rtl"] .right-4 { right:auto; left:1rem }
+[dir="rtl"] .right-6 { right:auto; left:1.5rem }
+[dir="rtl"] .top-7.right-6 { right:auto; left:1.5rem }
+
+/* --- Marges & remplissages --- */
+[dir="rtl"] .pl-9  { padding-left:.75rem; padding-right:2.25rem }
+[dir="rtl"] .pl-3  { padding-left:0; padding-right:.75rem }
+[dir="rtl"] .pr-3  { padding-right:0; padding-left:.75rem }
+[dir="rtl"] .ml-1  { margin-left:0; margin-right:.25rem }
+[dir="rtl"] .ml-2  { margin-left:0; margin-right:.5rem }
+[dir="rtl"] .mr-1  { margin-right:0; margin-left:.25rem }
+[dir="rtl"] .mr-2  { margin-right:0; margin-left:.5rem }
+
+/* --- Bordures --- */
+[dir="rtl"] .border-l  { border-left-width:0; border-right-width:1px }
+[dir="rtl"] .border-l-2{ border-left-width:0; border-right-width:2px }
+[dir="rtl"] .border-r  { border-right-width:0; border-left-width:1px }
+
+/* --- Dégradés : on inverse le sens --- */
+[dir="rtl"] .bg-gradient-to-r { background-image:linear-gradient(to left ,var(--tw-gradient-stops)) }
+[dir="rtl"] .bg-gradient-to-l { background-image:linear-gradient(to right,var(--tw-gradient-stops)) }
+
+/* --- Icônes directionnelles : flèches et chevrons pointent vers la gauche --- */
+[dir="rtl"] .lucide-arrow-right,
+[dir="rtl"] .lucide-arrow-left,
+[dir="rtl"] .lucide-chevron-right,
+[dir="rtl"] .lucide-chevron-left,
+[dir="rtl"] .cat-chev { transform:scaleX(-1) }
+[dir="rtl"] .cat-open .cat-chev { transform:scaleX(-1) rotate(90deg) }
+/* les icônes non directionnelles ne doivent PAS être retournées */
+[dir="rtl"] .lucide-globe,[dir="rtl"] .lucide-message-circle,[dir="rtl"] .lucide-menu,
+[dir="rtl"] .lucide-search,[dir="rtl"] .lucide-check,[dir="rtl"] .lucide-shield,
+[dir="rtl"] .lucide-mail,[dir="rtl"] .lucide-phone,[dir="rtl"] .lucide-map-pin { transform:none }
+
+/* --- Menu latéral du catalogue : bordure du sous-menu à droite --- */
+[dir="rtl"] .cat-sub ul { border-left:0; border-right:1px solid rgba(6,182,212,.20);
+                          margin-left:0; margin-right:.25rem;
+                          padding-left:0; padding-right:.75rem }
+[dir="rtl"] .cat-card .cat-more { align-self:flex-end }
+
+/* --- Champs de formulaire --- */
+[dir="rtl"] input,[dir="rtl"] textarea,[dir="rtl"] select { text-align:right }
+[dir="rtl"] input[type="tel"],[dir="rtl"] input[type="email"] { text-align:left; direction:ltr }
+
+/* --- Les nombres et sigles latins restent lisibles dans un flux arabe --- */
+[dir="rtl"] .ltr-inline { direction:ltr; unicode-bidi:isolate; display:inline-block }
+
+/* --- Alignement aux points de rupture (les variantes ne sont pas couvertes
+       par la regle .text-left generique) --- */
+[dir="rtl"] .sm\:text-left,[dir="rtl"] .md\:text-left,
+[dir="rtl"] .lg\:text-left,[dir="rtl"] .xl\:text-left { text-align:right }
+[dir="rtl"] .sm\:text-right,[dir="rtl"] .md\:text-right,
+[dir="rtl"] .lg\:text-right,[dir="rtl"] .xl\:text-right { text-align:left }

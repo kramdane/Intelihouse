@@ -1,0 +1,237 @@
+/* ------------------------------------------------------------------
+   catalogue.css — utilitaires complémentaires
+   Le fichier style.css est le CSS Tailwind compilé du site d'origine :
+   il ne contient QUE les classes utilisées par la page d'accueil.
+   Toute classe nouvelle doit donc être définie ici.
+   Points de rupture : sm 40rem · md 48rem · lg 64rem · xl 80rem
+------------------------------------------------------------------- */
+
+/* --- Espacements --- */
+.-my-1        { margin-top:-.25rem; margin-bottom:-.25rem }
+.mb-5         { margin-bottom:1.25rem }
+.mb-9         { margin-bottom:2.25rem }
+.pb-14        { padding-bottom:3.5rem }
+.py-14        { padding-top:3.5rem; padding-bottom:3.5rem }
+.py-20        { padding-top:5rem; padding-bottom:5rem }
+.pt-32        { padding-top:8rem }
+.pl-9         { padding-left:2.25rem }
+.left-3       { left:.75rem }
+
+/* --- Grille & flux --- */
+.items-baseline      { align-items:baseline }
+.min-h-\[2rem\]      { min-height:2rem }
+.aspect-\[4\/3\]     { aspect-ratio:4/3 }
+.grid-cols-1         { grid-template-columns:repeat(1,minmax(0,1fr)) }
+
+/* --- Couleurs --- */
+.bg-slate-950            { background-color:#020617 }
+.bg-slate-950\/70        { background-color:rgba(2,6,23,.7) }
+.border-cyan-500\/10     { border-color:rgba(6,182,212,.10) }
+.border-cyan-500\/25     { border-color:rgba(6,182,212,.25) }
+.border-slate-800\/60    { border-color:rgba(30,41,59,.60) }
+.text-cyan-500\/40       { color:rgba(6,182,212,.40) }
+.text-cyan-500\/70       { color:rgba(6,182,212,.70) }
+.opacity-85              { opacity:.85 }
+.via-\[\#030507\]\/30    { --tw-gradient-via:rgba(3,5,7,.3);
+                           --tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-via),var(--tw-gradient-to) }
+.bg-\[radial-gradient\(ellipse_at_top\,rgba\(0\,242\,254\,0\.10\)\,transparent_60\%\)\]{
+  background-image:radial-gradient(ellipse at top,rgba(0,242,254,.10),transparent 60%) }
+.placeholder\:text-slate-600::placeholder { color:#475569 }
+
+/* --- États --- */
+.focus\:border-cyan-500\/50:focus  { border-color:rgba(6,182,212,.5) }
+.hover\:bg-white:hover             { background-color:#fff }
+.hover\:bg-cyan-500\/10:hover      { background-color:rgba(6,182,212,.10) }
+.hover\:border-cyan-500\/40:hover  { border-color:rgba(6,182,212,.40) }
+.hover\:gap-3:hover                { gap:.75rem }
+.hover\:-translate-y-1\.5:hover    { transform:translateY(-.375rem) }
+.hover\:shadow-\[0_20px_50px_-12px_rgba\(0\,242\,254\,0\.18\)\]:hover{
+  box-shadow:0 20px 50px -12px rgba(0,242,254,.18) }
+
+/* --- ≥ 640px (sm) --- */
+@media (min-width:40rem){
+  .sm\:pt-40       { padding-top:10rem }
+  .sm\:text-3xl    { font-size:1.875rem; line-height:2.25rem }
+  .sm\:grid-cols-2 { grid-template-columns:repeat(2,minmax(0,1fr)) }
+}
+
+/* --- ≥ 1024px (lg) --- */
+@media (min-width:64rem){
+  .lg\:grid-cols-\[280px_1fr\] { grid-template-columns:280px minmax(0,1fr) }
+  .lg\:gap-7   { gap:1.75rem }
+  .lg\:gap-14  { gap:3.5rem }
+  .lg\:py-20   { padding-top:5rem; padding-bottom:5rem }
+  .lg\:sticky  { position:sticky }
+  .lg\:top-28  { top:7rem }
+  .lg\:text-4xl{ font-size:2.25rem; line-height:2.5rem }
+  .lg\:text-6xl{ font-size:3.75rem; line-height:1 }
+}
+
+/* --- ≥ 1280px (xl) --- */
+@media (min-width:80rem){
+  .xl\:grid-cols-3 { grid-template-columns:repeat(3,minmax(0,1fr)) }
+}
+
+/* --- Accordéon du menu latéral --- */
+.cat-sub  { max-height:0; overflow:hidden; transition:max-height .35s cubic-bezier(.22,1,.36,1) }
+.cat-open .cat-sub  { max-height:600px }
+.cat-chev { transition:transform .3s }
+.cat-open .cat-chev { transform:rotate(90deg) }
+
+/* --- Cartes : hauteur homogène, lien aligné en bas --- */
+.cat-card       { display:flex; flex-direction:column }
+.cat-card .cat-body { flex:1 1 auto; display:flex; flex-direction:column }
+.cat-card .cat-more { margin-top:auto; align-self:flex-start }
+
+/* --- Rythme vertical de la page --- */
+.cat-section { padding-top:3.5rem; padding-bottom:4.5rem }
+.cat-cta     { padding-top:4.5rem; padding-bottom:5rem }
+@media (min-width:64rem){ .cat-section{ padding-top:5rem; padding-bottom:5rem } }
+
+/* --- Champ de recherche : icône parfaitement centrée --- */
+#cat-search { line-height:1.25rem }
+
+
+/* --- Logo : hauteurs du pied de page --- */
+.h-14 { height:3.5rem }
+@media (min-width:40rem){ .sm\:h-16 { height:4rem } }
+
+/* --- Pastille de langue mobile : masquee des que le selecteur complet apparait --- */
+@media (min-width:48rem){ .md\:hidden { display:none } }
+
+/* ------------------------------------------------------------------
+   Menu mobile plein ecran.
+   Il s'appuyait sur z-[60] et bg-[#030507]/97 : deux valeurs Tailwind
+   arbitraires ABSENTES du CSS purge. Le panneau s'ouvrait donc sans
+   fond ni z-index : invisible et non cliquable.
+------------------------------------------------------------------- */
+.ih-menu{ position:fixed; inset:0; z-index:9999; display:none;
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:1.75rem; padding:2rem; background:rgba(3,5,7,.97);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
+.ih-menu.is-open{ display:flex }
+.ih-menu a{ font-family:inherit; font-size:1.5rem; font-weight:600; line-height:1.4;
+  color:#e2e8f0; text-decoration:none; transition:color .2s }
+.ih-menu a:hover,.ih-menu a:focus{ color:#00F2FE; outline:none }
+.ih-menu .ih-menu-cta{ margin-top:1rem; padding:.85rem 1.9rem; border-radius:.75rem;
+  background:#00F2FE; color:#000; font-size:.75rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:.08em }
+.ih-menu .ih-menu-cta:hover{ background:#fff }
+.ih-menu .ih-menu-close{ position:absolute; top:1.25rem; right:1.5rem; font-size:2.5rem;
+  line-height:1; color:#cbd5e1; background:none; border:0; cursor:pointer; padding:.25rem .75rem }
+.ih-menu .ih-menu-close:hover{ color:#00F2FE }
+[dir="rtl"] .ih-menu .ih-menu-close{ right:auto; left:1.5rem }
+[dir="rtl"] .ih-menu .ih-menu-cta{ text-transform:none; letter-spacing:0 }
+
+/* ------------------------------------------------------------------
+   Catalogue produits — styles dedies (aucune dependance a Tailwind,
+   dont le CSS purge ne contient que les classes de la page d'accueil)
+------------------------------------------------------------------- */
+.ih-wrap{max-width:1280px;margin:0 auto;padding:0 1rem}
+@media(min-width:640px){.ih-wrap{padding:0 1.5rem}}
+@media(min-width:1024px){.ih-wrap{padding:0 2rem}}
+
+.ih-fil{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;font-size:.75rem;color:#64748b;margin-bottom:1.5rem}
+.ih-fil a{color:#94a3b8;text-decoration:none}
+.ih-fil a:hover{color:#00F2FE}
+.ih-fil span.sep{color:rgba(6,182,212,.4)}
+
+.ih-grille{display:grid;gap:1.5rem;grid-template-columns:repeat(1,minmax(0,1fr))}
+@media(min-width:640px){.ih-grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1024px){.ih-grille{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1280px){.ih-grille{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+.ih-carte{display:flex;flex-direction:column;border-radius:1rem;overflow:hidden;
+  background:rgba(15,23,42,.4);border:1px solid rgba(30,41,59,.8);text-decoration:none;
+  transition:transform .4s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .4s}
+.ih-carte:hover{transform:translateY(-6px);border-color:rgba(6,182,212,.4);
+  box-shadow:0 20px 50px -12px rgba(0,242,254,.18)}
+.ih-vign{position:relative;aspect-ratio:4/3;overflow:hidden;background:#0a0e14;
+  display:flex;align-items:center;justify-content:center}
+.ih-vign img{width:100%;height:100%;object-fit:contain;padding:.75rem;
+  opacity:.92;transition:opacity .5s,transform .7s}
+.ih-carte:hover .ih-vign img{opacity:1;transform:scale(1.05)}
+.ih-vign.cover img{object-fit:cover;padding:0}
+.ih-corps{flex:1 1 auto;display:flex;flex-direction:column;padding:1.25rem}
+.ih-marque{font-size:.625rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:#00F2FE;margin-bottom:.4rem}
+.ih-titre{font-family:'Outfit','Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1rem;
+  color:#fff;line-height:1.35;margin:0 0 .45rem}
+.ih-carte:hover .ih-titre{color:#00F2FE}
+.ih-ref{font-size:.7rem;color:#64748b;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:.5rem}
+.ih-res{font-size:.75rem;color:#94a3b8;line-height:1.65;margin:0 0 .9rem}
+.ih-plus{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#00F2FE}
+.ih-carte:hover .ih-plus{gap:.75rem}
+.ih-badge{position:absolute;top:.7rem;right:.7rem;padding:.2rem .55rem;border-radius:999px;
+  font-size:.6rem;font-weight:700;background:rgba(3,5,7,.8);border:1px solid rgba(6,182,212,.3);color:#67e8f9}
+[dir="rtl"] .ih-badge{right:auto;left:.7rem}
+[dir="rtl"] .ih-plus{align-self:flex-end}
+[dir="rtl"] .ih-plus svg,[dir="rtl"] .ih-fil svg{transform:scaleX(-1)}
+
+.ih-side{border-radius:1rem;background:rgba(15,23,42,.4);border:1px solid rgba(30,41,59,.8);padding:1.5rem}
+.ih-side h2{font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;color:#fff;margin:0 0 1.1rem;display:flex;align-items:center;gap:.5rem}
+.ih-side h2::before{content:"";width:6px;height:6px;border-radius:50%;background:#00F2FE}
+.ih-arbre{list-style:none;margin:0;padding:0}
+.ih-arbre li{border-bottom:1px solid rgba(30,41,59,.6)}
+.ih-arbre li:last-child{border-bottom:0}
+.ih-arbre a{display:flex;justify-content:space-between;gap:.75rem;padding:.65rem 0;
+  font-size:.8rem;color:#cbd5e1;text-decoration:none;transition:color .2s}
+.ih-arbre a:hover,.ih-arbre a.actif{color:#00F2FE}
+.ih-arbre .cpt{font-size:.65rem;color:#475569;font-variant-numeric:tabular-nums}
+.ih-arbre .sous{list-style:none;margin:0 0 .5rem;padding:0 0 0 .8rem;
+  border-left:1px solid rgba(6,182,212,.2)}
+[dir="rtl"] .ih-arbre .sous{padding:0 .8rem 0 0;border-left:0;border-right:1px solid rgba(6,182,212,.2)}
+.ih-arbre .sous a{font-size:.72rem;color:#64748b;padding:.3rem 0}
+
+.ih-cherche{position:relative;margin-bottom:1.25rem}
+.ih-cherche input{width:100%;padding:.65rem .9rem .65rem 2.3rem;border-radius:.5rem;
+  background:rgba(2,6,23,.7);border:1px solid #1e293b;color:#e2e8f0;font-size:.78rem;font-family:inherit}
+[dir="rtl"] .ih-cherche input{padding:.65rem 2.3rem .65rem .9rem}
+.ih-cherche input::placeholder{color:#475569}
+.ih-cherche input:focus{outline:none;border-color:rgba(6,182,212,.5)}
+.ih-cherche svg{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);width:1rem;height:1rem;color:#475569}
+[dir="rtl"] .ih-cherche svg{left:auto;right:.75rem}
+
+.ih-cols{display:grid;gap:2.5rem;align-items:start;grid-template-columns:1fr}
+@media(min-width:1024px){.ih-cols{grid-template-columns:290px minmax(0,1fr);gap:3rem}
+  .ih-cols>aside{position:sticky;top:7rem}}
+.ih-vide{text-align:center;color:#64748b;font-size:.85rem;padding:4rem 0}
+.ih-compte{font-size:.75rem;color:#64748b;margin-bottom:1.5rem}
+
+/* --- fiche produit --- */
+.ih-fiche{display:grid;gap:2.5rem;grid-template-columns:1fr}
+@media(min-width:900px){.ih-fiche{grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:3.5rem}}
+.ih-photo{border-radius:1rem;overflow:hidden;background:#0a0e14;border:1px solid rgba(30,41,59,.8);
+  aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+.ih-photo img{max-width:100%;max-height:100%;object-fit:contain}
+.ih-h1{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.9rem;line-height:1.25;color:#fff;margin:.4rem 0 .8rem}
+@media(min-width:640px){.ih-h1{font-size:2.3rem}}
+.ih-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.ih-tag{padding:.3rem .7rem;border-radius:999px;font-size:.68rem;font-weight:600;
+  background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);color:#67e8f9}
+.ih-tag.gris{background:rgba(30,41,59,.5);border-color:rgba(51,65,85,.8);color:#94a3b8}
+.ih-cta{display:inline-flex;align-items:center;gap:.6rem;padding:.95rem 1.8rem;border-radius:.75rem;
+  background:#25D366;color:#04140a;font-weight:700;font-size:.8rem;text-decoration:none;
+  box-shadow:0 10px 30px -8px rgba(37,211,102,.5);transition:transform .2s,background .2s}
+.ih-cta:hover{background:#22c55e;transform:translateY(-2px)}
+.ih-desc{margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid rgba(30,41,59,.8);
+  color:#cbd5e1;font-size:.875rem;line-height:1.8}
+.ih-desc h2,.ih-desc h3{font-family:'Outfit',sans-serif;color:#fff;font-weight:700;
+  font-size:1.05rem;margin:1.8rem 0 .7rem}
+.ih-desc h4{color:#00F2FE;font-size:.75rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;margin:1.5rem 0 .5rem}
+.ih-desc p{margin:0 0 .9rem}
+.ih-desc ul,.ih-desc ol{margin:0 0 1rem;padding-left:1.2rem}
+[dir="rtl"] .ih-desc ul,[dir="rtl"] .ih-desc ol{padding-left:0;padding-right:1.2rem}
+.ih-desc li{margin-bottom:.4rem}
+.ih-desc .spec-key{display:inline-block;min-width:190px;color:#94a3b8;font-weight:600}
+.ih-desc .spec-val{color:#e2e8f0}
+.ih-desc a.doc-link{color:#00F2FE;text-decoration:none;border-bottom:1px dotted rgba(0,242,254,.4)}
+.ih-desc a.doc-link::after{content:" ↗";font-size:.75em;opacity:.7}
+.ih-desc a.doc-link:hover{border-bottom-style:solid}
+.ih-desc table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.8rem}
+.ih-desc td,.ih-desc th{border:1px solid rgba(30,41,59,.8);padding:.5rem .7rem;text-align:left}
+[dir="rtl"] .ih-desc td,[dir="rtl"] .ih-desc th{text-align:right}
+.ih-note{margin-top:1rem;font-size:.7rem;color:#475569;line-height:1.6}
