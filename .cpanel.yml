@@ -1,0 +1,34 @@
+---
+deployment:
+  tasks:
+    # Racine du site. A adapter si l'utilisateur cPanel change.
+    - export DEPLOYPATH=/home/intellih/public_html
+
+    - /bin/mkdir -p $DEPLOYPATH/assets
+    - /bin/mkdir -p $DEPLOYPATH/images/produits
+
+    # Pages
+    - /bin/cp -f index.html $DEPLOYPATH/
+    - /bin/cp -f index-ar.html $DEPLOYPATH/
+    - /bin/cp -f catalogue.html $DEPLOYPATH/
+    - /bin/cp -f catalogue-ar.html $DEPLOYPATH/
+    - /bin/cp -f categorie.html $DEPLOYPATH/
+    - /bin/cp -f categorie-ar.html $DEPLOYPATH/
+    - /bin/cp -f produit.html $DEPLOYPATH/
+    - /bin/cp -f produit-ar.html $DEPLOYPATH/
+
+    # Configuration serveur (fichier cache : jamais pris par un caractere joker)
+    - /bin/cp -f .htaccess $DEPLOYPATH/
+
+    # Feuilles de style, scripts et donnees produits
+    - /bin/cp -f assets/style.css $DEPLOYPATH/assets/
+    - /bin/cp -f assets/extra.css $DEPLOYPATH/assets/
+    - /bin/cp -f assets/rtl.css $DEPLOYPATH/assets/
+    - /bin/cp -f assets/app.js $DEPLOYPATH/assets/
+    - /bin/cp -f assets/app-ar.js $DEPLOYPATH/assets/
+    - /bin/cp -f assets/produits.json $DEPLOYPATH/assets/
+    - /bin/cp -f assets/descriptions.json $DEPLOYPATH/assets/
+
+    # Visuels
+    - /bin/cp -f images/*.webp $DEPLOYPATH/images/
+    - /bin/cp -f images/produits/*.webp $DEPLOYPATH/images/produits/
