@@ -344,3 +344,56 @@
   padding:.5rem .2rem;font-size:.95rem;font-weight:500;color:#94a3b8}
 .ih-menu-cat-liste a:hover{color:#00F2FE}
 .ih-menu-cat-liste .n{font-size:.7rem;color:#475569}
+
+/* ------------------------------------------------------------------
+   Pages services
+------------------------------------------------------------------- */
+.ih-intro{font-size:1.02rem;line-height:1.9;color:#cbd5e1;max-width:46rem;margin:0 0 2rem}
+.ih-h2{font-family:'Outfit','Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.35rem;
+  color:#fff;margin:3.5rem 0 1.5rem;padding-bottom:.7rem;
+  border-bottom:1px solid rgba(30,41,59,.8)}
+.ih-benefs{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:768px){.ih-benefs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ih-benef{padding:1.35rem 1.5rem;border-radius:.9rem;
+  background:rgba(15,23,42,.4);border:1px solid rgba(30,41,59,.8)}
+.ih-benef h3{font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;color:#00F2FE;margin:0 0 .5rem}
+.ih-benef p{margin:0;font-size:.85rem;line-height:1.75;color:#94a3b8}
+.ih-etapes{counter-reset:e;list-style:none;margin:0;padding:0;display:grid;gap:1rem}
+.ih-etapes li{counter-increment:e;position:relative;padding-left:3.2rem}
+[dir="rtl"] .ih-etapes li{padding-left:0;padding-right:3.2rem}
+.ih-etapes li::before{content:counter(e,decimal-leading-zero);position:absolute;left:0;top:-.15rem;
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:1.15rem;color:rgba(6,182,212,.45)}
+[dir="rtl"] .ih-etapes li::before{left:auto;right:0}
+.ih-etapes h3{font-family:'Outfit',sans-serif;font-weight:700;font-size:.92rem;color:#fff;margin:0 0 .25rem}
+.ih-etapes p{margin:0;font-size:.83rem;line-height:1.7;color:#94a3b8}
+.ih-mat{font-size:.85rem;line-height:1.85;color:#94a3b8;max-width:46rem;margin:0}
+.ih-zone{margin:2rem 0 0;font-size:.78rem;color:#64748b;font-style:italic}
+.ih-autres{margin-top:.5rem;gap:.5rem}
+.ih-autres a{text-decoration:none}
+.ih-autres a:hover{color:#00F2FE;border-color:rgba(6,182,212,.4)}
+
+/* ------------------------------------------------------------------
+   Cartes produits en blanc.
+   Les visuels fournisseurs sont sur fond blanc : une carte sombre
+   dessinait un cadre noir disgracieux autour de chaque photo.
+------------------------------------------------------------------- */
+.ih-carte.ih-produit{background:#fff;border-color:#e2e8f0}
+.ih-carte.ih-produit:hover{border-color:#00F2FE;
+  box-shadow:0 20px 50px -12px rgba(0,242,254,.28)}
+.ih-carte.ih-produit .ih-vign{background:#fff}
+.ih-carte.ih-produit .ih-vign img{opacity:1}
+.ih-carte.ih-produit .ih-titre{color:#0f172a}
+.ih-carte.ih-produit:hover .ih-titre{color:#0369a1}
+.ih-carte.ih-produit .ih-marque{color:#0369a1}
+.ih-carte.ih-produit .ih-ref{color:#64748b}
+.ih-carte.ih-produit .ih-res{color:#475569}
+.ih-carte.ih-produit .ih-plus{color:#0369a1}
+.ih-carte.ih-produit .ih-badge{background:rgba(255,255,255,.9);
+  border-color:#cbd5e1;color:#0f172a}
+
+/* --- Mega-menu Services : liste simple, 4 colonnes --- */
+.ih-mega-serv-in{grid-template-columns:repeat(4,minmax(0,1fr));gap:.25rem 2rem;
+  padding:1.75rem 2rem 1.25rem}
+.ih-mega-serv-in .ih-mega-col{gap:0}
+.ih-mega-serv-in .ih-mega-sub{font-size:.8rem;line-height:2.1;color:#cbd5e1}
+.ih-mega-serv-in .ih-mega-sub:hover{color:#00F2FE}

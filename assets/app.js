@@ -261,16 +261,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 /* ==================================================================
-   Mega-menu Catalogue : panneau plein largeur sous l'en-tete (desktop)
-   et liste depliable dans le menu plein ecran (mobile).
+   Mega-menus (Catalogue et Services) : panneau plein largeur sous
+   l'en-tete en desktop, listes depliables dans le menu mobile.
 ================================================================== */
 document.addEventListener('DOMContentLoaded', function () {
-  var btn = document.querySelector('.ih-mega-btn');
-  var panneau = document.getElementById('ih-mega');
   var entete = document.querySelector('header');
-  if (!btn || !panneau) return;
-
-  /* la hauteur de l'en-tete change au defilement : on la publie en CSS */
   function hauteur() {
     if (entete) document.documentElement.style.setProperty(
       '--ih-hh', Math.round(entete.getBoundingClientRect().height) + 'px');
@@ -279,59 +274,78 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('scroll', hauteur, {passive: true});
   window.addEventListener('resize', hauteur);
 
-  var ouvert = false, minuteur = null;
-  function montrer(on) {
-    if (on === ouvert) return;
-    ouvert = on;
-    if (on) { panneau.hidden = false; hauteur();
-              requestAnimationFrame(function(){ panneau.classList.add('ouvert'); }); }
-    else    { panneau.classList.remove('ouvert');
-              setTimeout(function(){ if (!ouvert) panneau.hidden = true; }, 240); }
-    btn.setAttribute('aria-expanded', on ? 'true' : 'false');
-  }
-  function differer(on) { clearTimeout(minuteur); minuteur = setTimeout(function(){ montrer(on); }, on ? 60 : 220); }
-
-  /* survol au pointeur, clic au tactile — le lien reste utilisable */
-  [btn.parentNode, panneau].forEach(function (z) {
-    z.addEventListener('mouseenter', function(){ differer(true); });
-    z.addEventListener('mouseleave', function(){ differer(false); });
+  var menus = [];
+  [['.ih-mega-btn', 'ih-mega'], ['.ih-mega-btn2', 'ih-mega-serv']].forEach(function (paire) {
+    var btn = document.querySelector(paire[0]);
+    var pan = document.getElementById(paire[1]);
+    if (!btn || !pan) return;
+    var m = {btn: btn, pan: pan, ouvert: false, t: null};
+    m.montrer = function (on) {
+      if (on === m.ouvert) return;
+      m.ouvert = on;
+      if (on) {
+        menus.forEach(function (o) { if (o !== m) o.montrer(false); });
+        pan.hidden = false; hauteur();
+        requestAnimationFrame(function () { pan.classList.add('ouvert'); });
+      } else {
+        pan.classList.remove('ouvert');
+        setTimeout(function () { if (!m.ouvert) pan.hidden = true; }, 240);
+      }
+      btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    };
+    m.differer = function (on) {
+      clearTimeout(m.t);
+      m.t = setTimeout(function () { m.montrer(on); }, on ? 60 : 220);
+    };
+    [btn.parentNode, pan].forEach(function (z) {
+      z.addEventListener('mouseenter', function () { m.differer(true); });
+      z.addEventListener('mouseleave', function () { m.differer(false); });
+    });
+    btn.addEventListener('click', function (e) {
+      if (window.matchMedia('(hover: none)').matches) { e.preventDefault(); m.montrer(!m.ouvert); }
+    });
+    menus.push(m);
   });
-  btn.addEventListener('click', function (e) {
-    if (window.matchMedia('(hover: none)').matches) { e.preventDefault(); montrer(!ouvert); }
+  if (!menus.length) return;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') menus.forEach(function (m) { m.montrer(false); });
   });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') montrer(false); });
   document.addEventListener('click', function (e) {
-    if (ouvert && !panneau.contains(e.target) && !btn.parentNode.contains(e.target)) montrer(false);
+    menus.forEach(function (m) {
+      if (m.ouvert && !m.pan.contains(e.target) && !m.btn.parentNode.contains(e.target)) m.montrer(false);
+    });
   });
 
-  /* ---- version mobile : les familles dans le menu plein ecran ---- */
+  /* ---- menu mobile : familles de produits et liste des services ---- */
   var menu = document.querySelector('.ih-menu');
   if (!menu) return;
-  var lienCat = [].slice.call(menu.querySelectorAll('a')).filter(function (a) {
-    return /catalogue(-ar)?\.html$/.test(a.getAttribute('href') || ''); })[0];
-  if (!lienCat) return;
-
-  var boite = document.createElement('div');
-  boite.className = 'ih-menu-cat';
-  var liste = document.createElement('div');
-  liste.className = 'ih-menu-cat-liste';
-  liste.innerHTML = [].slice.call(panneau.querySelectorAll('.ih-mega-titre')).map(function (t) {
-    var n = t.querySelector('.ih-mega-n');
-    return '<a href="' + t.getAttribute('href') + '">' + t.firstChild.textContent
-         + '<span class="n">' + (n ? n.textContent : '') + '</span></a>';
-  }).join('');
-  boite.appendChild(liste);
-  lienCat.parentNode.insertBefore(boite, lienCat.nextSibling);
-
-  var fleche = document.createElement('button');
-  fleche.type = 'button';
-  fleche.setAttribute('aria-label', 'Familles de produits');
-  fleche.style.cssText = 'background:none;border:0;color:#00F2FE;font-size:1.4rem;line-height:1;cursor:pointer;padding:0 .5rem';
-  fleche.textContent = '⌄';
-  lienCat.appendChild(fleche);
-  fleche.addEventListener('click', function (e) {
-    e.preventDefault(); e.stopPropagation();
-    boite.classList.toggle('ouvert');
-    fleche.textContent = boite.classList.contains('ouvert') ? '⌃' : '⌄';
-  });
+  function deplier(regex, panneau, selecteur, avecCompteur) {
+    var lien = [].slice.call(menu.querySelectorAll('a')).filter(function (a) {
+      return regex.test(a.getAttribute('href') || ''); })[0];
+    if (!lien || !panneau) return;
+    var boite = document.createElement('div');
+    boite.className = 'ih-menu-cat';
+    var liste = document.createElement('div');
+    liste.className = 'ih-menu-cat-liste';
+    liste.innerHTML = [].slice.call(panneau.querySelectorAll(selecteur)).map(function (t) {
+      var n = avecCompteur ? t.querySelector('.ih-mega-n') : null;
+      var txt = avecCompteur ? t.firstChild.textContent : t.textContent;
+      return '<a href="' + t.getAttribute('href') + '">' + txt
+           + (n ? '<span class="n">' + n.textContent + '</span>' : '') + '</a>';
+    }).join('');
+    boite.appendChild(liste);
+    lien.parentNode.insertBefore(boite, lien.nextSibling);
+    var f = document.createElement('button');
+    f.type = 'button';
+    f.style.cssText = 'background:none;border:0;color:#00F2FE;font-size:1.4rem;line-height:1;cursor:pointer;padding:0 .5rem';
+    f.textContent = '⌄';
+    lien.appendChild(f);
+    f.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      boite.classList.toggle('ouvert');
+      f.textContent = boite.classList.contains('ouvert') ? '⌃' : '⌄';
+    });
+  }
+  deplier(/catalogue(-ar)?\.html$/, document.getElementById('ih-mega'), '.ih-mega-titre', true);
+  deplier(/#services$/, document.getElementById('ih-mega-serv'), '.ih-mega-sub', false);
 });
