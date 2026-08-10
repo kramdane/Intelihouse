@@ -349,3 +349,161 @@ document.addEventListener('DOMContentLoaded', function () {
   deplier(/catalogue(-ar)?\.html$/, document.getElementById('ih-mega'), '.ih-mega-titre', true);
   deplier(/#services$/, document.getElementById('ih-mega-serv'), '.ih-mega-sub', false);
 });
+
+
+/* ==================================================================
+   Recherche globale.
+   Les familles et les services sont lus dans les panneaux des
+   mega-menus, deja presents sur chaque page : aucun fichier
+   supplementaire a charger. Les produits viennent de produits.json,
+   telecharge au premier usage seulement.
+================================================================== */
+document.addEventListener('DOMContentLoaded', function () {
+  var pan = document.getElementById('ih-search');
+  var champ = document.getElementById('ih-q');
+  var zone = document.getElementById('ih-res');
+  if (!pan || !champ || !zone) return;
+  var boutons = document.querySelectorAll('.ih-loupe');
+  var AR = document.documentElement.getAttribute('dir') === 'rtl';
+  var T = AR ? {p:'المنتجات', c:'العائلات', s:'الخدمات', rien:'ما كاين حتى نتيجة.'}
+             : {p:'Produits', c:'Familles', s:'Services', rien:'Aucun résultat.'};
+  var aide = zone.innerHTML;
+  var produits = null, enCours = false, vise = -1;
+
+  var norm = function (s) {
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  };
+  function statiques(sel, panneau) {
+    var p = document.getElementById(panneau);
+    if (!p) return [];
+    return [].slice.call(p.querySelectorAll(sel)).map(function (a) {
+      var n = a.querySelector('.ih-mega-n');
+      var txt = n ? a.firstChild.textContent : a.textContent;
+      return {nom: txt.trim(), href: a.getAttribute('href'), sec: n ? n.textContent.trim() : ''};
+    });
+  }
+  var familles = statiques('.ih-mega-titre, .ih-mega-sub', 'ih-mega');
+  var services = statiques('.ih-mega-sub', 'ih-mega-serv');
+
+  function charger() {
+    if (produits || enCours) return;
+    enCours = true;
+    fetch('assets/produits.json').then(function (r) { return r.json(); })
+      .then(function (d) { produits = d.produits; enCours = false; rendu(); })
+      .catch(function () { produits = []; enCours = false; });   /* file:// ou reseau : on continue sans */
+  }
+
+  function ligne(o, img) {
+    return '<a href="' + o.href + '">'
+      + (img ? '<img src="' + img + '" alt="" loading="lazy">' : '')
+      + '<span class="ih-search-nom">' + o.nom + '</span>'
+      + (o.sec ? '<span class="ih-search-sec">' + o.sec + '</span>' : '') + '</a>';
+  }
+  function rendu() {
+    var q = norm(champ.value.trim());
+    vise = -1;
+    if (q.length < 2) { zone.innerHTML = aide; return; }
+    var suf = AR ? '-ar' : '';
+    var out = '';
+    var fc = familles.filter(function (o) { return norm(o.nom).indexOf(q) !== -1; }).slice(0, 6);
+    var sv = services.filter(function (o) { return norm(o.nom).indexOf(q) !== -1; }).slice(0, 6);
+    var pr = (produits || []).filter(function (p) {
+      return norm(p.n + ' ' + p.r + ' ' + p.m).indexOf(q) !== -1; }).slice(0, 8);
+    if (pr.length) {
+      out += '<div class="ih-search-groupe">' + T.p + '</div>' + pr.map(function (p) {
+        var img = p.i ? 'images/produits/' + p.i.split('/').pop().replace(/\.[a-z]+$/i, '') + '.webp' : '';
+        return ligne({nom: p.n, href: 'produit' + suf + '.html?p=' + encodeURIComponent(p.s),
+                      sec: p.r || p.m || ''}, img);
+      }).join('');
+    }
+    if (fc.length) out += '<div class="ih-search-groupe">' + T.c + '</div>' + fc.map(function (o) { return ligne(o, ''); }).join('');
+    if (sv.length) out += '<div class="ih-search-groupe">' + T.s + '</div>' + sv.map(function (o) { return ligne(o, ''); }).join('');
+    zone.innerHTML = out || '<p class="ih-search-rien">' + T.rien + '</p>';
+    zone.scrollTop = 0;
+  }
+
+  function ouvrir(on) {
+    if (on) {
+      pan.hidden = false;
+      requestAnimationFrame(function () { pan.classList.add('ouvert'); champ.focus(); });
+      document.body.style.overflow = 'hidden';
+      charger();
+    } else {
+      pan.classList.remove('ouvert');
+      document.body.style.overflow = '';
+      setTimeout(function () { if (!pan.classList.contains('ouvert')) pan.hidden = true; }, 220);
+    }
+  }
+  [].slice.call(boutons).forEach(function (b) {
+    b.addEventListener('click', function (e) { e.preventDefault(); ouvrir(true); });
+  });
+  pan.querySelector('.ih-search-x').addEventListener('click', function () { ouvrir(false); });
+  pan.addEventListener('click', function (e) { if (e.target === pan) ouvrir(false); });
+  champ.addEventListener('input', rendu);
+
+  document.addEventListener('keydown', function (e) {
+    /* Ctrl+K ou Cmd+K : reflexe repandu */
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); ouvrir(true); return; }
+    if (pan.hidden) return;
+    var liens = zone.querySelectorAll('a');
+    if (e.key === 'Escape') { ouvrir(false); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      if (!liens.length) return;
+      e.preventDefault();
+      if (vise >= 0) liens[vise].classList.remove('vise');
+      vise = e.key === 'ArrowDown' ? (vise + 1) % liens.length : (vise <= 0 ? liens.length - 1 : vise - 1);
+      liens[vise].classList.add('vise');
+      liens[vise].scrollIntoView({block: 'nearest'});
+    } else if (e.key === 'Enter' && liens.length) {
+      (liens[vise >= 0 ? vise : 0]).click();
+    }
+  });
+});
+
+
+/* ==================================================================
+   Carrousel du hero : fondu toutes les 6 s, avec puces de navigation.
+   Se met en pause quand l'onglet passe en arriere-plan, et se
+   desactive si le visiteur a demande moins d'animations.
+================================================================== */
+document.addEventListener('DOMContentLoaded', function () {
+  var zone = document.querySelector('.ih-hero');
+  if (!zone) return;
+  var vues = [].slice.call(zone.querySelectorAll('.ih-hero-img'));
+  if (vues.length < 2) return;
+
+  var i = 0, minuteur = null;
+  var calme = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var points = document.createElement('div');
+  points.className = 'ih-hero-points';
+  points.setAttribute('role', 'tablist');
+  vues.forEach(function (v, k) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Visuel ' + (k + 1));
+    if (k === 0) b.className = 'actif';
+    b.addEventListener('click', function () { aller(k); relancer(); });
+    points.appendChild(b);
+  });
+  zone.parentNode.appendChild(points);
+  var puces = [].slice.call(points.children);
+
+  function aller(n) {
+    if (n === i) return;
+    vues[i].classList.remove('actif'); puces[i].classList.remove('actif');
+    i = (n + vues.length) % vues.length;
+    vues[i].classList.add('actif'); puces[i].classList.add('actif');
+    /* relance l'effet de zoom sur le visuel qui entre */
+    vues[i].style.animation = 'none'; void vues[i].offsetWidth; vues[i].style.animation = '';
+  }
+  function relancer() {
+    clearInterval(minuteur);
+    if (calme) return;
+    minuteur = setInterval(function () { aller(i + 1); }, 6000);
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) clearInterval(minuteur); else relancer();
+  });
+  relancer();
+});
