@@ -20,8 +20,6 @@
 /* --- Grille & flux --- */
 .items-baseline      { align-items:baseline }
 .min-h-\[2rem\]      { min-height:2rem }
-.aspect-\[4\/3\]     { aspect-ratio:4/3 }
-.grid-cols-1         { grid-template-columns:repeat(1,minmax(0,1fr)) }
 
 /* --- Couleurs --- */
 .bg-slate-950            { background-color:#020617 }
@@ -51,9 +49,7 @@
 /* --- ≥ 640px (sm) --- */
 @media (min-width:40rem){
   .sm\:pt-40       { padding-top:10rem }
-  .sm\:text-3xl    { font-size:1.875rem; line-height:2.25rem }
-  .sm\:grid-cols-2 { grid-template-columns:repeat(2,minmax(0,1fr)) }
-}
+  .sm\:text-3xl    { font-size:1.875rem; line-height:2.25rem }}
 
 /* --- ≥ 1024px (lg) --- */
 @media (min-width:64rem){
@@ -93,7 +89,6 @@
 
 
 /* --- Logo : hauteurs du pied de page --- */
-.h-14 { height:3.5rem }
 @media (min-width:40rem){ .sm\:h-16 { height:4rem } }
 
 /* --- Pastille de langue mobile : masquee des que le selecteur complet apparait --- */
@@ -472,3 +467,99 @@
 .ih-hero-points button.actif{background:#00F2FE;width:2.4rem}
 .ih-hero-points button:hover{background:rgba(0,242,254,.7)}
 @media (max-width:640px){ .ih-hero-points{bottom:1rem} }
+
+/* ==================================================================
+   Mise en page desktop.
+   Le contenu plafonnait a 1280 px alors que l'en-tete Tailwind monte
+   a 1536 px : logo et titres n'etaient pas alignes, et les cartes
+   tombaient a 202 px de large sur un ecran de 1920.
+================================================================== */
+.ih-wrap{max-width:1536px}
+
+/* --- colonne laterale plus large quand la place le permet --- */
+@media (min-width:1280px){
+  .ih-cols{grid-template-columns:320px minmax(0,1fr);gap:3.5rem}
+}
+
+/* --- grille : des cartes qui respirent au lieu de se multiplier --- */
+@media (min-width:1536px){
+  .ih-grille{gap:1.75rem}
+}
+
+/* --- confort de lecture : on borne la longueur de ligne, pas la page --- */
+.ih-intro{max-width:64ch}
+.ih-mat{max-width:72ch}
+.ih-desc{max-width:80ch}
+
+/* --- fiches services : 3 colonnes de benefices sur grand ecran --- */
+@media (min-width:1400px){
+  .ih-benefs{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+/* --- etapes sur deux colonnes : evite une colonne unique interminable --- */
+@media (min-width:1024px){
+  .ih-etapes{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem 3rem}
+}
+
+/* --- fiche produit : le visuel profite de la largeur --- */
+@media (min-width:1400px){
+  .ih-fiche{grid-template-columns:minmax(0,540px) minmax(0,1fr);gap:4.5rem}
+}
+
+/* --- titres : un cran au-dessus sur les tres grands ecrans --- */
+@media (min-width:1536px){
+  .ih-h1{font-size:2.9rem}
+  .ih-h2{font-size:1.5rem}
+}
+
+/* ==================================================================
+   Densite desktop.
+   Audit : « un layout mobile agrandi ». Trois corrections — un visuel
+   qui ancre le haut des fiches, des grilles plus denses, et des
+   elements d'interface ramenes a une taille de souris.
+================================================================== */
+
+/* --- fiches services : texte a gauche, visuel a droite --- */
+.ih-serv-haut{display:grid;gap:2rem;grid-template-columns:1fr;align-items:center}
+.ih-serv-vis{display:none}
+@media (min-width:1024px){
+  .ih-serv-haut{grid-template-columns:minmax(0,1fr) minmax(0,42%);gap:4rem;
+    margin-bottom:1rem}
+  .ih-serv-vis{display:block;border-radius:1rem;overflow:hidden;
+    border:1px solid rgba(30,41,59,.8);background:#0a0e14;aspect-ratio:4/3}
+  .ih-serv-vis img{width:100%;height:100%;object-fit:cover;opacity:.85}
+  .ih-serv-haut .ih-intro{max-width:none}
+}
+
+/* --- catalogue : plus de colonnes sur les grands ecrans --- */
+@media (min-width:1536px){ .ih-grille{grid-template-columns:repeat(5,minmax(0,1fr))} }
+@media (min-width:1800px){ .ih-grille{grid-template-columns:repeat(6,minmax(0,1fr))} }
+
+/* --- cartes moins creuses --- */
+@media (min-width:1024px){
+  .ih-corps{padding:1rem 1.1rem}
+  .ih-titre{font-size:.92rem}
+  .ih-res{font-size:.72rem;margin-bottom:.7rem}
+}
+
+/* --- benefices : 3 puis 4 colonnes, padding resserre --- */
+@media (min-width:1280px){ .ih-benefs{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (min-width:1700px){ .ih-benefs{grid-template-columns:repeat(4,minmax(0,1fr))} }
+@media (min-width:1024px){ .ih-benef{padding:1.1rem 1.2rem} }
+
+/* --- interface : taille souris, pas taille pouce --- */
+@media (min-width:1024px){
+  .ih-cta{padding:.8rem 1.5rem;font-size:.76rem}
+  a[aria-label="WhatsApp Contact"],a[aria-label="اتصال واتساب"]{
+    width:3rem;height:3rem;bottom:1.25rem;right:1.25rem}
+  [dir="rtl"] a[aria-label="اتصال واتساب"]{right:auto;left:1.25rem}
+}
+
+/* --- fiches services : sous-titre et phrase de chute --- */
+.ih-soustitre{font-family:'Outfit','Plus Jakarta Sans',sans-serif;font-weight:600;
+  font-size:1.15rem;line-height:1.5;color:#00F2FE;margin:-.4rem 0 1.2rem;max-width:34ch}
+.ih-intro p{margin:0 0 1rem}
+.ih-intro p:last-child{margin-bottom:0}
+.ih-chute{margin:2.5rem 0 0;padding:1.1rem 1.4rem;border-radius:.8rem;
+  background:rgba(6,182,212,.07);border-left:2px solid #00F2FE;
+  font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600;color:#e2e8f0}
+[dir="rtl"] .ih-chute{border-left:0;border-right:2px solid #00F2FE}
