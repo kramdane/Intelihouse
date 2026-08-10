@@ -288,3 +288,59 @@
   .ih-cols{display:flex;flex-direction:column;gap:2rem}
   .ih-cols>aside{order:2}
 }
+
+/* ------------------------------------------------------------------
+   Mega-menu Catalogue.
+   Le panneau est en position:fixed sous l'en-tete, dont la hauteur
+   varie au defilement : elle est publiee par le JS dans --ih-hh.
+------------------------------------------------------------------- */
+:root{--ih-hh:88px}
+
+.ih-mega-wrap{position:relative;display:flex;align-items:center}
+.ih-mega-btn{display:inline-flex;align-items:center;gap:.3rem}
+.ih-mega-fleche{width:.8rem;height:.8rem;transition:transform .25s;opacity:.75}
+.ih-mega-btn[aria-expanded="true"] .ih-mega-fleche{transform:rotate(180deg)}
+
+.ih-mega{position:fixed;left:0;right:0;top:var(--ih-hh);z-index:45;
+  background:rgba(3,5,7,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(6,182,212,.15);border-bottom:1px solid rgba(6,182,212,.15);
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.8);
+  opacity:0;transform:translateY(-8px);pointer-events:none;
+  transition:opacity .22s ease,transform .22s ease}
+.ih-mega.ouvert{opacity:1;transform:none;pointer-events:auto}
+.ih-mega[hidden]{display:none}
+
+.ih-mega-in{max-width:1280px;margin:0 auto;padding:2rem 2rem 1.5rem;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5rem 2rem;
+  max-height:calc(100vh - var(--ih-hh) - 4.5rem);overflow-y:auto}
+.ih-mega-col{display:flex;flex-direction:column;gap:1.25rem}
+.ih-mega-bloc{display:flex;flex-direction:column}
+.ih-mega-titre{display:flex;align-items:baseline;gap:.5rem;
+  font-family:'Outfit','Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.82rem;
+  color:#fff;text-decoration:none;margin-bottom:.5rem;transition:color .2s}
+.ih-mega-titre:hover{color:#00F2FE}
+.ih-mega-n{font-size:.6rem;font-weight:600;color:#475569;font-variant-numeric:tabular-nums}
+.ih-mega-sub{display:block;font-size:.74rem;line-height:1.9;color:#94a3b8;
+  text-decoration:none;transition:color .2s,padding .2s}
+.ih-mega-sub:hover{color:#00F2FE;padding-left:.25rem}
+[dir="rtl"] .ih-mega-sub:hover{padding-left:0;padding-right:.25rem}
+
+.ih-mega-pied{max-width:1280px;margin:0 auto;padding:.9rem 2rem;
+  border-top:1px solid rgba(30,41,59,.7);display:flex;align-items:center;
+  justify-content:space-between;gap:1rem;font-size:.72rem;color:#64748b}
+.ih-mega-pied a{color:#00F2FE;text-decoration:none;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;font-size:.68rem}
+[dir="rtl"] .ih-mega-pied a{text-transform:none;letter-spacing:0}
+.ih-mega-pied a:hover{color:#fff}
+
+@media (max-width:1023px){ .ih-mega{display:none !important} }
+
+/* --- Catalogue deplie dans le menu mobile --- */
+.ih-menu-cat{width:100%;max-width:22rem;margin-top:-.4rem}
+.ih-menu-cat-liste{display:none;max-height:45vh;overflow-y:auto;
+  margin-top:.6rem;padding-top:.6rem;border-top:1px solid rgba(30,41,59,.8)}
+.ih-menu-cat.ouvert .ih-menu-cat-liste{display:block}
+.ih-menu-cat-liste a{display:flex;justify-content:space-between;gap:.75rem;
+  padding:.5rem .2rem;font-size:.95rem;font-weight:500;color:#94a3b8}
+.ih-menu-cat-liste a:hover{color:#00F2FE}
+.ih-menu-cat-liste .n{font-size:.7rem;color:#475569}

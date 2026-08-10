@@ -258,3 +258,80 @@ document.addEventListener('DOMContentLoaded', function () {
     tog.setAttribute('aria-expanded', on ? 'true' : 'false');
   });
 });
+
+
+/* ==================================================================
+   Mega-menu Catalogue : panneau plein largeur sous l'en-tete (desktop)
+   et liste depliable dans le menu plein ecran (mobile).
+================================================================== */
+document.addEventListener('DOMContentLoaded', function () {
+  var btn = document.querySelector('.ih-mega-btn');
+  var panneau = document.getElementById('ih-mega');
+  var entete = document.querySelector('header');
+  if (!btn || !panneau) return;
+
+  /* la hauteur de l'en-tete change au defilement : on la publie en CSS */
+  function hauteur() {
+    if (entete) document.documentElement.style.setProperty(
+      '--ih-hh', Math.round(entete.getBoundingClientRect().height) + 'px');
+  }
+  hauteur();
+  window.addEventListener('scroll', hauteur, {passive: true});
+  window.addEventListener('resize', hauteur);
+
+  var ouvert = false, minuteur = null;
+  function montrer(on) {
+    if (on === ouvert) return;
+    ouvert = on;
+    if (on) { panneau.hidden = false; hauteur();
+              requestAnimationFrame(function(){ panneau.classList.add('ouvert'); }); }
+    else    { panneau.classList.remove('ouvert');
+              setTimeout(function(){ if (!ouvert) panneau.hidden = true; }, 240); }
+    btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+  }
+  function differer(on) { clearTimeout(minuteur); minuteur = setTimeout(function(){ montrer(on); }, on ? 60 : 220); }
+
+  /* survol au pointeur, clic au tactile — le lien reste utilisable */
+  [btn.parentNode, panneau].forEach(function (z) {
+    z.addEventListener('mouseenter', function(){ differer(true); });
+    z.addEventListener('mouseleave', function(){ differer(false); });
+  });
+  btn.addEventListener('click', function (e) {
+    if (window.matchMedia('(hover: none)').matches) { e.preventDefault(); montrer(!ouvert); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') montrer(false); });
+  document.addEventListener('click', function (e) {
+    if (ouvert && !panneau.contains(e.target) && !btn.parentNode.contains(e.target)) montrer(false);
+  });
+
+  /* ---- version mobile : les familles dans le menu plein ecran ---- */
+  var menu = document.querySelector('.ih-menu');
+  if (!menu) return;
+  var lienCat = [].slice.call(menu.querySelectorAll('a')).filter(function (a) {
+    return /catalogue(-ar)?\.html$/.test(a.getAttribute('href') || ''); })[0];
+  if (!lienCat) return;
+
+  var boite = document.createElement('div');
+  boite.className = 'ih-menu-cat';
+  var liste = document.createElement('div');
+  liste.className = 'ih-menu-cat-liste';
+  liste.innerHTML = [].slice.call(panneau.querySelectorAll('.ih-mega-titre')).map(function (t) {
+    var n = t.querySelector('.ih-mega-n');
+    return '<a href="' + t.getAttribute('href') + '">' + t.firstChild.textContent
+         + '<span class="n">' + (n ? n.textContent : '') + '</span></a>';
+  }).join('');
+  boite.appendChild(liste);
+  lienCat.parentNode.insertBefore(boite, lienCat.nextSibling);
+
+  var fleche = document.createElement('button');
+  fleche.type = 'button';
+  fleche.setAttribute('aria-label', 'Familles de produits');
+  fleche.style.cssText = 'background:none;border:0;color:#00F2FE;font-size:1.4rem;line-height:1;cursor:pointer;padding:0 .5rem';
+  fleche.textContent = '⌄';
+  lienCat.appendChild(fleche);
+  fleche.addEventListener('click', function (e) {
+    e.preventDefault(); e.stopPropagation();
+    boite.classList.toggle('ouvert');
+    fleche.textContent = boite.classList.contains('ouvert') ? '⌃' : '⌄';
+  });
+});
