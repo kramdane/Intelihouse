@@ -23,6 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+        with:
+          # active Pages automatiquement si ce n'est pas deja fait
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
