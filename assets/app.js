@@ -244,3 +244,17 @@ document.addEventListener('DOMContentLoaded', function () {
   var li = cible.closest('.ih-noeud');
   if (li) bascule(li, true);
 });
+
+
+/* --- Colonne des categories : depliage sur mobile --- */
+document.addEventListener('DOMContentLoaded', function () {
+  var aside = document.querySelector('.ih-aside');
+  if (!aside) return;
+  var tog = aside.querySelector('.ih-side-tog');
+  if (!tog) return;
+  tog.addEventListener('click', function () {
+    var on = !aside.classList.contains('ouvert');
+    aside.classList.toggle('ouvert', on);
+    tog.setAttribute('aria-expanded', on ? 'true' : 'false');
+  });
+});

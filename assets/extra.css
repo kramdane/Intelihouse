@@ -255,3 +255,36 @@
 .ih-desc td,.ih-desc th{border:1px solid rgba(30,41,59,.8);padding:.5rem .7rem;text-align:left}
 [dir="rtl"] .ih-desc td,[dir="rtl"] .ih-desc th{text-align:right}
 .ih-note{margin-top:1rem;font-size:.7rem;color:#475569;line-height:1.6}
+
+
+/* ------------------------------------------------------------------
+   Colonne des categories : barre repliable sur mobile.
+   En dessous de 1024 px elle s'empilait au-dessus du contenu et il
+   fallait faire defiler 18 lignes avant d'atteindre les produits.
+------------------------------------------------------------------- */
+.ih-side-tog{display:none}
+
+@media (max-width:1023px){
+  .ih-side{padding:0;overflow:hidden}
+  .ih-side>.ih-side-corps>h2{display:none}
+  .ih-side-tog{
+    display:flex;align-items:center;gap:.6rem;width:100%;
+    padding:.95rem 1.15rem;border:0;background:transparent;cursor:pointer;
+    font-family:'Outfit','Plus Jakarta Sans',sans-serif;font-size:.72rem;font-weight:800;
+    letter-spacing:.14em;text-transform:uppercase;color:#fff;text-align:left}
+  [dir="rtl"] .ih-side-tog{text-align:right;letter-spacing:0;text-transform:none}
+  .ih-side-tog>span:first-child{flex:1 1 auto}
+  .ih-side-n{flex:0 0 auto;padding:.1rem .5rem;border-radius:999px;font-size:.65rem;
+    font-weight:700;letter-spacing:0;background:rgba(6,182,212,.12);
+    border:1px solid rgba(6,182,212,.25);color:#67e8f9}
+  .ih-side-tog svg{flex:0 0 auto;width:.95rem;height:.95rem;color:rgba(6,182,212,.8);
+    transition:transform .3s}
+  .ih-aside.ouvert .ih-side-tog svg{transform:rotate(180deg)}
+  .ih-side-corps{max-height:0;overflow:hidden;
+    transition:max-height .35s cubic-bezier(.22,1,.36,1)}
+  .ih-aside.ouvert .ih-side-corps{max-height:70vh;overflow-y:auto;
+    padding:0 1.15rem .5rem;border-top:1px solid rgba(30,41,59,.7)}
+  /* sur mobile la colonne passe sous la grille : les cartes d'abord */
+  .ih-cols{display:flex;flex-direction:column;gap:2rem}
+  .ih-cols>aside{order:2}
+}
