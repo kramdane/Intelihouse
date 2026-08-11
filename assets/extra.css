@@ -643,3 +643,6 @@ body,.bg-\[\#030507\]{background-color:#0a1018 !important}
 .ih-contact-val a:hover{color:#00F2FE}
 /* l'adresse postale reste secondaire */
 .ih-contact-t + .text-xs{font-size:.85rem;line-height:1.7}
+
+/* --- bloc explicatif des fiches services --- */
+.ih-bloc{font-size:.92rem;line-height:1.9;color:#cbd5e1;max-width:72ch;margin:0}
