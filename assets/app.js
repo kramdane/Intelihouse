@@ -534,3 +534,32 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape') blocs.forEach(function (o) { o.classList.remove('ouvert'); });
   });
 });
+
+
+/* ==================================================================
+   Filtres du portfolio : les boutons ne faisaient rien.
+   L'etat actif reprend exactement les classes deja presentes dans le
+   balisage, pour ne pas dupliquer la charte.
+================================================================== */
+document.addEventListener('DOMContentLoaded', function () {
+  var btns = [].slice.call(document.querySelectorAll('.ih-filtre'));
+  var cards = [].slice.call(document.querySelectorAll('.ih-projet'));
+  if (!btns.length || !cards.length) return;
+
+  var ACTIF = btns[0].className.replace(' ih-filtre', '');
+  var INACTIF = (btns[1] || btns[0]).className.replace(' ih-filtre', '');
+
+  function appliquer(f) {
+    cards.forEach(function (c) {
+      c.classList.toggle('masque', f !== 'tous' && c.getAttribute('data-f') !== f);
+    });
+    btns.forEach(function (b) {
+      b.className = ((b.getAttribute('data-f') === f) ? ACTIF : INACTIF) + ' ih-filtre';
+      b.setAttribute('aria-pressed', b.getAttribute('data-f') === f ? 'true' : 'false');
+    });
+  }
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () { appliquer(b.getAttribute('data-f')); });
+  });
+  appliquer('tous');
+});

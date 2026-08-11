@@ -592,3 +592,54 @@
 .ih-lang-mob .ih-lang-btn{padding:.3rem .5rem;font-size:.68rem}
 .ih-lang-mob .ih-lang-menu{min-width:9.5rem}
 @media (min-width:768px){ .ih-lang-mob{display:none} }
+
+/* ==================================================================
+   Fond general eclairci.
+   #030507 etait quasi noir : les photos du hero disparaissaient sous
+   les degrades et les cartes se detachaient mal. On passe a #0a1018,
+   toujours sombre mais lisible.
+================================================================== */
+body,.bg-\[\#030507\]{background-color:#0a1018 !important}
+.bg-\[\#020305\]{background-color:#070c13 !important}
+.bg-\[\#060B12\]\/80{background-color:rgba(13,20,31,.85) !important}
+
+/* degrades du hero : moins opaques, la photo redevient visible */
+.from-\[\#030507\]{--tw-gradient-from:rgba(10,16,24,.92) var(--tw-gradient-from-position) !important}
+.via-\[\#030507\]\/90{--tw-gradient-via:rgba(10,16,24,.55) var(--tw-gradient-via-position) !important}
+.to-\[\#030507\]\/60{--tw-gradient-to:rgba(10,16,24,.15) var(--tw-gradient-to-position) !important}
+.to-\[\#030507\]\/80{--tw-gradient-to:rgba(10,16,24,.7) var(--tw-gradient-to-position) !important}
+
+/* surfaces : cartes, panneaux, menus */
+.ih-carte,.ih-side,.ih-benef{background:rgba(21,31,46,.55)}
+.ih-carte{border-color:rgba(45,60,82,.85)}
+.ih-side,.ih-benef{border-color:rgba(45,60,82,.8)}
+.ih-vign{background:#111a26}
+.ih-mega,.ih-menu{background:rgba(10,16,24,.97)}
+.ih-search{background:rgba(10,16,24,.88)}
+.ih-search-boite,.ih-lang-menu{background:#111a26}
+.ih-photo{background:#111a26;border-color:rgba(45,60,82,.8)}
+.ih-serv-vis{background:#111a26;border-color:rgba(45,60,82,.8)}
+.ih-cherche input,.ih-lang-btn,.ih-loupe{background:rgba(17,26,38,.9)}
+.ih-h2{border-bottom-color:rgba(45,60,82,.8)}
+.ih-desc{border-top-color:rgba(45,60,82,.8)}
+.ih-arbre>li{border-bottom-color:rgba(45,60,82,.7)}
+
+/* --- pastilles du hero devenues cliquables --- */
+.ih-pastille{text-decoration:none;transition:transform .25s,border-color .25s,background .25s}
+.ih-pastille:hover{transform:translateY(-3px);border-color:rgba(6,182,212,.55)}
+.ih-pastille:hover h3{color:#00F2FE}
+
+/* --- filtres du portfolio --- */
+.ih-filtre{cursor:pointer}
+.ih-projet{transition:opacity .3s,transform .3s}
+.ih-projet.masque{display:none}
+
+/* --- bloc coordonnees : agrandi et cliquable --- */
+.ih-contact-t{font-size:1rem;line-height:1.4}
+@media (min-width:768px){ .ih-contact-t{font-size:1.05rem} }
+.ih-contact-val{margin-top:.35rem;font-size:.95rem;line-height:1.85;color:#cbd5e1}
+@media (min-width:768px){ .ih-contact-val{font-size:1.02rem} }
+.ih-contact-val a{color:#cbd5e1;text-decoration:none;transition:color .2s}
+.ih-contact-val a:hover{color:#00F2FE}
+/* l'adresse postale reste secondaire */
+.ih-contact-t + .text-xs{font-size:.85rem;line-height:1.7}
