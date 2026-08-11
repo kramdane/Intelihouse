@@ -5,24 +5,15 @@ deployment:
     - export DEPLOYPATH=/home/intellih/public_html
 
     - /bin/mkdir -p $DEPLOYPATH/assets
-    - /bin/mkdir -p $DEPLOYPATH/images/produits
+    - /bin/mkdir -p $DEPLOYPATH/images
 
     # Toutes les pages, y compris celles ajoutees plus tard.
-    # Une liste explicite avait laisse les 34 fiches services en 404.
     - /bin/cp -f *.html $DEPLOYPATH/
 
     # Fichier cache : jamais pris par un caractere joker, d'ou la ligne dediee.
     - /bin/cp -f .htaccess $DEPLOYPATH/
 
-    # Styles, scripts et donnees produits
-    - /bin/cp -f assets/style.css $DEPLOYPATH/assets/
-    - /bin/cp -f assets/extra.css $DEPLOYPATH/assets/
-    - /bin/cp -f assets/rtl.css $DEPLOYPATH/assets/
-    - /bin/cp -f assets/app.js $DEPLOYPATH/assets/
-    - /bin/cp -f assets/app-ar.js $DEPLOYPATH/assets/
-    - /bin/cp -f assets/produits.json $DEPLOYPATH/assets/
-    - /bin/cp -f assets/descriptions.json $DEPLOYPATH/assets/
-
-    # Visuels
-    - /bin/cp -f images/*.webp $DEPLOYPATH/images/
-    - /bin/cp -f images/produits/*.webp $DEPLOYPATH/images/produits/
+    # Copies RECURSIVES : une enumeration figee avait laisse le dossier
+    # images/services en 404 apres son ajout. Le -R suit les sous-dossiers.
+    - /bin/cp -Rf assets/. $DEPLOYPATH/assets/
+    - /bin/cp -Rf images/. $DEPLOYPATH/images/
