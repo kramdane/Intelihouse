@@ -646,3 +646,31 @@ body,.bg-\[\#030507\]{background-color:#0a1018 !important}
 
 /* --- bloc explicatif des fiches services --- */
 .ih-bloc{font-size:.92rem;line-height:1.9;color:#cbd5e1;max-width:72ch;margin:0}
+
+/* ------------------------------------------------------------------
+   Fiches services : surtitre, comparatif de technologies, solutions
+------------------------------------------------------------------- */
+.ih-surtitre{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:.6rem;
+  font-size:.68rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#00F2FE}
+.ih-surtitre::before{content:"";width:1.6rem;height:2px;background:#00F2FE}
+[dir="rtl"] .ih-surtitre{letter-spacing:0;text-transform:none}
+
+.ih-technos{display:grid;gap:1.25rem;grid-template-columns:1fr;margin:2.5rem 0 0}
+@media (min-width:900px){ .ih-technos{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem} }
+.ih-techno{display:flex;flex-direction:column;padding:1.5rem;border-radius:1rem;
+  background:rgba(21,31,46,.55);border:1px solid rgba(45,60,82,.85);
+  transition:border-color .3s,transform .3s}
+.ih-techno:hover{border-color:rgba(6,182,212,.45);transform:translateY(-4px)}
+.ih-techno h3{font-family:'Outfit','Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1.05rem;
+  color:#fff;margin:0 0 .7rem}
+.ih-techno p{flex:1 1 auto;margin:0 0 1.1rem;font-size:.85rem;line-height:1.75;color:#94a3b8}
+.ih-techno-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.ih-techno-tags span{padding:.25rem .6rem;border-radius:999px;font-size:.66rem;font-weight:600;
+  background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);color:#67e8f9}
+
+.ih-solutions{display:flex;flex-wrap:wrap;gap:.6rem}
+.ih-solutions span{display:inline-flex;align-items:center;gap:.5rem;
+  padding:.6rem 1.1rem;border-radius:.7rem;font-size:.85rem;color:#cbd5e1;
+  background:rgba(21,31,46,.55);border:1px solid rgba(45,60,82,.85)}
+.ih-solutions span::before{content:"";width:.4rem;height:.4rem;border-radius:50%;
+  background:#00F2FE;flex:0 0 auto}
